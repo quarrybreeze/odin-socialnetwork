@@ -1,0 +1,6 @@
+<%= form_with model: @post do |form| %>
+  <%= form.hidden_field :author_id, value: current_user.id%> 
+  <%= form.label :body %>
+  <%= form.text_field :body %>
+  <%= form.submit %><br><br>
+<% end %>
