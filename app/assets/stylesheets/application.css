@@ -8,3 +8,10 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+ .navbar {
+  display: flex;
+ }
+
+ .navbar .navlink {
+  margin: 0em 1em;
+ }
