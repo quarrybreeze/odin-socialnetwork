@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :posts, :users
+  resources :posts
+
+  resources :users do
+    resources :follows
+  end
   root to: "posts#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
