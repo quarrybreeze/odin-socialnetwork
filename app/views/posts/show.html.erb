@@ -3,3 +3,20 @@
 
 Author: <%= @post.author.email %><br>
 Body: <%= @post.body %><br>
+
+
+<% if @likes.exists?(user_id: current_user.id) %>
+  <%= button_to "Unlike", post_like_path(@post, current_user), method: :delete %>
+<% else %>
+  <%= button_to "Like", post_likes_path(@post)%>
+<% end %>
+
+<% if @likes.any? %>
+  This post has <%= @like_count %> likes. <br>
+  Liked by the following users: <br>
+  <% @likes.each do |like| %>
+    <%= like.liker.email %> <br>
+  <%end%>
+<%else%>
+    Nobody likes this post.
+<%end%>

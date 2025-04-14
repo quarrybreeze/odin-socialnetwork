@@ -2,6 +2,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @posts = Post.includes(:author, :likes).all
   end
 
   def new
@@ -9,7 +10,9 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post = Post.includes(:likes).find(params[:id])
+    @likes = @post.likes
+    @like_count = @likes.count
   end
 
   def create

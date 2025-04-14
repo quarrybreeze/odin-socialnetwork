@@ -2,3 +2,25 @@
 <p>Find me in app/views/posts/index.html.erb</p>
 
 <%= button_to "New Post", new_post_path, method: :get%>
+
+<%posts = @posts%>
+<h3>Posts: </h3>
+<% if posts.any? %>
+  <% posts.each do |post|%>
+    <% post_number = post.id%>
+    <p>Body: <%= post.body%></p>
+    <p>Author: <%= post.author.email%></p>
+    <p>Likes: <%= post.likes.count %> 
+
+    <% if post.likes.exists?(user_id: current_user.id) %>
+      <%= button_to "Unlike", post_like_path(post, current_user), method: :delete %>
+    <% else %>
+      <%= button_to "Like", post_likes_path(post)%>
+    <% end %>
+    
+    </p>
+    <%= button_to "Details", post_path(post), method: :get%>
+  <%end%>
+<%else%>
+  <p>There are no posts.</p>
+<%end%>
