@@ -10,6 +10,7 @@
     <% post_number = post.id%>
     <p>Body: <%= post.body%></p>
     <p>Author: <%= post.author.email%></p>
+    <p>Posted at: <%= post.created_at %></p>
     <p>Likes: <%= post.likes.count %> 
 
     <% if post.likes.exists?(user_id: current_user.id) %>

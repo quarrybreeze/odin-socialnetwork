@@ -1,0 +1,21 @@
+<h1>Users#show</h1>
+<p>Find me in app/views/users/show.html.erb</p>
+
+<h3> User Detailrs: </h3>
+Email: <%= @user.email %> <br>
+<% followers = @user.followers %>
+<% if followers.include?(current_user)%>
+  <%= button_to "Unfollow", user_follow_path(@user, current_user), method: :delete %>
+<% elsif @user == current_user %>
+<% else %>
+  <%= button_to "Follow", user_follows_path(@user) %>
+<%end%>
+
+
+<h3> Post history </h3>
+<% if @user.authored_posts.any? %>
+  <% @user.authored_posts.each do |post| %>
+    <%= link_to "Body:", post_path(post) %> <%= post.body %> <br>
+  <%end%>
+<%end%>
+

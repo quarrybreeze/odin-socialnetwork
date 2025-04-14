@@ -2,7 +2,9 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @posts = Post.includes(:author, :likes, :comments).all
+    following_ids = current_user.following.pluck(:id) << current_user.id
+    @posts = Post.includes(:author, :likes, :comments)
+                 .where(author_id: following_ids)
     @comment = Comment.new
   end
 

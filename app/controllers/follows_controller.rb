@@ -8,9 +8,9 @@ class FollowsController < ApplicationController
     @follow = @followed_user.followed_by.new(follower: current_user)
 
     if @follow.save
-      redirect_to users_path, notice: "You are now following #{@followed_user.email}."
+      redirect_back fallback_location: root_path, notice: "You are now following #{@followed_user.email}."
     else
-      redirect_to users_path, status: :unprocessable_entity
+      redirect_back fallback_location: root_path, status: :unprocessable_entity
     end
   end
 
@@ -18,7 +18,7 @@ class FollowsController < ApplicationController
     @followed_user = User.find(params[:user_id])
     @follow = @followed_user.followed_by.find_by(follower: current_user)
     @follow.destroy
-    redirect_to users_path, notice: "You have unfollowed #{@followed_user.email}."
+    redirect_back fallback_location: root_path, notice: "You have unfollowed #{@followed_user.email}."
   end
 
   private
