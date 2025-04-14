@@ -15,3 +15,7 @@
  .navbar .navlink {
   margin: 0em 1em;
  }
+
+ .hidden {
+  display: none;
+}

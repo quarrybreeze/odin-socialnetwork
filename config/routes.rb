@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     resources :likes
   end
 
+  resources :comments
+
   resources :users do
     resources :follows
   end

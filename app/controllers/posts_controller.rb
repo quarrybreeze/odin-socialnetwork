@@ -2,7 +2,8 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @posts = Post.includes(:author, :likes).all
+    @posts = Post.includes(:author, :likes, :comments).all
+    @comment = Comment.new
   end
 
   def new
@@ -13,6 +14,8 @@ class PostsController < ApplicationController
     @post = Post.includes(:likes).find(params[:id])
     @likes = @post.likes
     @like_count = @likes.count
+    @comment = Comment.new
+    @comments = @post.comments
   end
 
   def create

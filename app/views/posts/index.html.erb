@@ -19,6 +19,44 @@
     <% end %>
     
     </p>
+
+    <br>
+    Comments: <br>
+    <% if posts.any? %>
+      <% post.comments.each do |comment| %>
+        <%= comment.commentator.email %> says <%= comment.body %><br>
+        <% if comment.commentator == current_user %>
+          <%= button_to "Delete", comment_path(comment), method: :delete %>
+        <% end %>
+      <%end%>
+    <%else%>
+        Nobody has commented yet. Be the first!
+    <%end%>
+
+    <br>
+
+    <div data-controller="toggle"
+      data-toggle-primary-class="hidden">
+      <div data-toggle-target="button">
+      <%= form_with model: @comment do |f| %>
+        <%= f.hidden_field :post_id, value: post.id%> 
+        <%= f.label :body %> 
+        <%= f.text_field :body %> <br>
+
+        <%= f.submit "Add Comment" %>
+        
+      <% end %>
+      <button data-toggle-target="button" data-action="toggle#clicked">
+        Undo
+      </button>
+      </div>
+
+      <button data-toggle-target="button2" data-action="toggle#clicked">
+        Add Comment
+      </button>
+    </div>
+
+
     <%= button_to "Details", post_path(post), method: :get%>
   <%end%>
 <%else%>

@@ -1,15 +1,11 @@
 <h1>Posts#show</h1>
 <p>Find me in app/views/posts/show.html.erb</p>
 
-Author: <%= @post.author.email %><br>
+
 Body: <%= @post.body %><br>
+By: <%= @post.author.email %><br>
 
-
-<% if @likes.exists?(user_id: current_user.id) %>
-  <%= button_to "Unlike", post_like_path(@post, current_user), method: :delete %>
-<% else %>
-  <%= button_to "Like", post_likes_path(@post)%>
-<% end %>
+<br>
 
 <% if @likes.any? %>
   This post has <%= @like_count %> likes. <br>
@@ -20,3 +16,46 @@ Body: <%= @post.body %><br>
 <%else%>
     Nobody likes this post.
 <%end%>
+
+<% if @likes.exists?(user_id: current_user.id) %>
+  <%= button_to "Unlike", post_like_path(@post, current_user), method: :delete %>
+<% else %>
+  <%= button_to "Like", post_likes_path(@post)%>
+<% end %>
+
+<br>
+Comments: <br>
+<% if @comments.any? %>
+  <% @comments.each do |comment| %>
+    <%= comment.commentator.email %> says <%= comment.body %><br>
+    <% if comment.commentator == current_user %>
+      <%= button_to "Delete", comment_path(comment), method: :delete %>
+    <% end %>
+  <%end%>
+<%else%>
+    Nobody has commented yet. Be the first!
+<%end%>
+
+<br>
+
+<div data-controller="toggle"
+  data-toggle-primary-class="hidden">
+  <div data-toggle-target="button">
+  <% post = @post.id %>
+  <%= form_with model: @comment do |f| %>
+    <%= f.hidden_field :post_id, value: post%> 
+    <%= f.label :body %> 
+    <%= f.text_field :body %> <br>
+
+    <%= f.submit "Add Comment" %>
+    
+  <% end %>
+  <button data-toggle-target="button" data-action="toggle#clicked">
+    Undo
+  </button>
+  </div>
+
+  <button data-toggle-target="button2" data-action="toggle#clicked">
+    Add Comment
+  </button>
+</div>
