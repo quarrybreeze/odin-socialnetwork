@@ -89,7 +89,18 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   # 
   
-  config.action_mailer.delivery_method = :smtp # or whatever you're using
-  config.action_mailer.perform_deliveries = false # set to true when ready
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:         "smtp.gmail.com",
+    port:            587,
+    domain:          "example.com",
+    user_name:       ENV["smtp_user_name"],
+    password:        ENV["smtp_password"],
+    authentication:  "plain",
+    enable_starttls: true,
+    open_timeout:    5,
+    read_timeout:    5
+  }
+  config.action_mailer.perform_deliveries = true # set to true when ready
 
 end
