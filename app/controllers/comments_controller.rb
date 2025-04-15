@@ -1,5 +1,4 @@
 class CommentsController < ApplicationController
-
   def new
     @comment = Comment.new
   end
@@ -8,7 +7,7 @@ class CommentsController < ApplicationController
     @commented_post = Post.find(params[:comment][:post_id])
     @comment = @commented_post.comments.new(comment_params.merge(commentator_id: current_user.id))
     if @comment.save
-      redirect_back fallback_location: root_path, notice: "You commented on #{@commented_post.author.email}'s post."
+      redirect_back fallback_location: root_path, notice: "You commented on #{@commented_post.author.display_name}'s post."
     else
       redirect_back fallback_location: root_path, status: :unprocessable_entity
     end

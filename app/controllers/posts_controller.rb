@@ -5,6 +5,7 @@ class PostsController < ApplicationController
     following_ids = current_user.following.pluck(:id) << current_user.id
     @posts = Post.includes(:author, :likes, :comments)
                  .where(author_id: following_ids)
+                 .order(created_at: :desc)
     @comment = Comment.new
     @post = Post.new
   end

@@ -10,8 +10,8 @@
  */
  .navbar {
   display: flex;
-  margin: 1em;
-  justify-content: center;
+  max-width: 30em;
+  margin: 1em auto;
  }
 
  .header {
@@ -23,7 +23,9 @@
  }
 
  .navbar .navlink {
-  margin: 0em 1em;
+  display: flex;
+  justify-content: flex-start;
+  margin: auto;
  }
 
  .hidden {
