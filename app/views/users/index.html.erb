@@ -4,8 +4,10 @@
 <h3>List of users:</h3>
 <% @users.each do |user| %>
   <% followers = user.followers%>
-  <% email = user.email %> 
-  <%= link_to email, user_path(user)%>
+  <% profile_pic_url = user.picture_url%>
+  <img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
+  <% display_name = user.display_name %> 
+  <%= link_to display_name, user_path(user)%>
   <% if followers.include?(current_user)%>
     <%= button_to "Unfollow", user_follow_path(user, current_user), method: :delete %>
   <% elsif user == current_user %>

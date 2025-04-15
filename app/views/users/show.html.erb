@@ -2,6 +2,9 @@
 <p>Find me in app/views/users/show.html.erb</p>
 
 <h3> User Detailrs: </h3>
+<% profile_pic_url = @user.picture_url%>
+<img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
+Display Name: <%= @user.display_name %> <br>
 Email: <%= @user.email %> <br>
 <% followers = @user.followers %>
 <% if followers.include?(current_user)%>

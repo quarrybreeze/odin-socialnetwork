@@ -19,3 +19,13 @@
  .hidden {
   display: none;
 }
+
+.post {
+  border-style: solid;
+  margin: 1em;
+}
+
+.profpic {
+  height: 3em;
+  width: 3em;
+}

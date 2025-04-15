@@ -2,8 +2,10 @@
 <p>Find me in app/views/posts/show.html.erb</p>
 
 
+<% profile_pic_url = @post.author.picture_url%>
+<img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
 Body: <%= @post.body %><br>
-By: <%= @post.author.email %><br>
+By: <%= @post.author.display_name %><br>
 
 <br>
 
@@ -11,7 +13,7 @@ By: <%= @post.author.email %><br>
   This post has <%= @like_count %> likes. <br>
   Liked by the following users: <br>
   <% @likes.each do |like| %>
-    <%= like.liker.email %> <br>
+    <%= like.liker.display_name %> <br>
   <%end%>
 <%else%>
     Nobody likes this post.
@@ -27,7 +29,7 @@ By: <%= @post.author.email %><br>
 Comments: <br>
 <% if @comments.any? %>
   <% @comments.each do |comment| %>
-    <%= comment.commentator.email %> says <%= comment.body %><br>
+    <%= comment.commentator.display_name %> says <%= comment.body %><br>
     <% if comment.commentator == current_user %>
       <%= button_to "Delete", comment_path(comment), method: :delete %>
     <% end %>

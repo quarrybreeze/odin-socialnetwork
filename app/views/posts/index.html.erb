@@ -6,60 +6,64 @@
 <%posts = @posts%>
 <h3>Posts: </h3>
 <% if posts.any? %>
+  
   <% posts.each do |post|%>
-    <% post_number = post.id%>
-    <p>Body: <%= post.body%></p>
-    <p>Author: <%= post.author.email%></p>
-    <p>Posted at: <%= post.created_at %></p>
-    <p>Likes: <%= post.likes.count %> 
+    <div class = "post">
+      <% post_number = post.id%>
+      <% profile_pic_url = post.author.picture_url%>
+      <img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
+      <p>Body: <%= post.body%></p>
+      <p>Author: <%= post.author.display_name%> posted at: <%= post.created_at %></p>
+      <p>Likes: <%= post.likes.count %> 
 
-    <% if post.likes.exists?(user_id: current_user.id) %>
-      <%= button_to "Unlike", post_like_path(post, current_user), method: :delete %>
-    <% else %>
-      <%= button_to "Like", post_likes_path(post)%>
-    <% end %>
-    
-    </p>
-
-    <br>
-    Comments: <br>
-    <% if posts.any? %>
-      <% post.comments.each do |comment| %>
-        <%= comment.commentator.email %> says <%= comment.body %><br>
-        <% if comment.commentator == current_user %>
-          <%= button_to "Delete", comment_path(comment), method: :delete %>
-        <% end %>
-      <%end%>
-    <%else%>
-        Nobody has commented yet. Be the first!
-    <%end%>
-
-    <br>
-
-    <div data-controller="toggle"
-      data-toggle-primary-class="hidden">
-      <div data-toggle-target="button">
-      <%= form_with model: @comment do |f| %>
-        <%= f.hidden_field :post_id, value: post.id%> 
-        <%= f.label :body %> 
-        <%= f.text_field :body %> <br>
-
-        <%= f.submit "Add Comment" %>
-        
+      <% if post.likes.exists?(user_id: current_user.id) %>
+        <%= button_to "Unlike", post_like_path(post, current_user), method: :delete %>
+      <% else %>
+        <%= button_to "Like", post_likes_path(post)%>
       <% end %>
-      <button data-toggle-target="button" data-action="toggle#clicked">
-        Undo
-      </button>
+      
+      </p>
+
+      Comments: <br>
+      <% if posts.any? %>
+        <% post.comments.each do |comment| %>
+          <%= comment.commentator.display_name %> says <%= comment.body %><br>
+          <% if comment.commentator == current_user %>
+            <%= button_to "Delete", comment_path(comment), method: :delete %>
+          <% end %>
+        <%end%>
+      <%else%>
+          Nobody has commented yet. Be the first!
+      <%end%>
+
+      <br>
+
+      <div data-controller="toggle"
+        data-toggle-primary-class="hidden">
+        <div data-toggle-target="button">
+        <%= form_with model: @comment do |f| %>
+          <%= f.hidden_field :post_id, value: post.id%> 
+          <%= f.label :body %> 
+          <%= f.text_field :body %> <br>
+
+          <%= f.submit "Add Comment" %>
+          
+        <% end %>
+        <button data-toggle-target="button" data-action="toggle#clicked">
+          Undo
+        </button>
+        </div>
+
+        <button data-toggle-target="button2" data-action="toggle#clicked">
+          Add Comment
+        </button>
       </div>
 
-      <button data-toggle-target="button2" data-action="toggle#clicked">
-        Add Comment
-      </button>
+
+      <%= button_to "Details", post_path(post), method: :get%>
     </div>
-
-
-    <%= button_to "Details", post_path(post), method: :get%>
   <%end%>
+
 <%else%>
   <p>There are no posts.</p>
 <%end%>
