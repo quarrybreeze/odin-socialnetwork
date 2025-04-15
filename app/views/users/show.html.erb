@@ -1,24 +1,123 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<div class = "header">
+  <h1>Users#show</h1>
+  <p>Find me in app/views/users/show.html.erb</p>
 
-<h3> User Detailrs: </h3>
-<% profile_pic_url = @user.picture_url%>
-<img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
-Display Name: <%= @user.display_name %> <br>
-Email: <%= @user.email %> <br>
-<% followers = @user.followers %>
-<% if followers.include?(current_user)%>
-  <%= button_to "Unfollow", user_follow_path(@user, current_user), method: :delete %>
-<% elsif @user == current_user %>
-<% else %>
-  <%= button_to "Follow", user_follows_path(@user) %>
-<%end%>
+  <h3> User Details: </h3>
+</div>
+  <% profile_pic_url = @user.picture_url%>
+  <div class = "user-index">
+    <div class = "pic">
+      <img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
+    </div>
+    <div class = "user-details">
+      Display Name: <%= @user.display_name %> <br>
+      Email: <%= @user.email %> <br>
+      Followers: <%= @follower_count %> <br>
+    </div>
+    <div class = "user-follow-button">
+      <% followers = @user.followers %>
+      <% if followers.include?(current_user)%>
+        <%= button_to "Unfollow", user_follow_path(@user, current_user), method: :delete %>
+      <% elsif @user == current_user %>
+      <% else %>
+        <%= button_to "Follow", user_follows_path(@user) %>
+      <%end%>
+    </div>
+  </div>
+
+</div>
+
+<div class = "header">
+  <h3> Post history </h3>
+</div>
+
+<% posts = @user.authored_posts %>
+<% if posts.any? %>
+  
+  <% posts.each do |post|%>
+    <div class = "post">
+      <% post_number = post.id%>
+      <% profile_pic_url = post.author.picture_url%>
+      <% author = post.author_id%>
+      <% display_name = post.author.display_name%> 
+      <div class = "content">
+        <div class = "pic">
+          <img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
+        </div>
+        <div class = "post-body">
+          <%= post.body%>
+        </div>
+        <div class = "post-details">
+          <%= link_to display_name, user_path(author)%> posted at: <%= post.created_at %>
+        </div>
+        <div class = "post-like-details">
+          <div class = "like-counter">
+          Likes: <%= post.likes.count %>
+          </div> 
+          <div class = "like-interactions">
+          <% if post.likes.exists?(user_id: current_user.id) %>
+            <%= button_to "Unlike", post_like_path(post, current_user), method: :delete %>
+          <% else %>
+            <%= button_to "Like", post_likes_path(post)%>
+          <% end %>
+          </div>
+        </div>
+      </div>
+      <br>
 
 
-<h3> Post history </h3>
-<% if @user.authored_posts.any? %>
-  <% @user.authored_posts.each do |post| %>
-    <%= link_to "Body:", post_path(post) %> <%= post.body %> <br>
+      Comments: <br>
+      <% if post.comments.any? %>
+        <% post.comments.each do |comment| %>
+          <div class = "comment">
+            <div class = "comment-content">
+              <% display_name = comment.commentator.display_name %>
+              <% commentator = comment.commentator.id %>
+              <%= link_to display_name, user_path(commentator) %> says <%= comment.body %>
+            </div>
+            <div class = "comment-interactions">
+              <% if comment.commentator == current_user %>
+                <%= button_to "Delete", comment_path(comment), method: :delete %>
+              <% end %>
+            </div>
+          </div>
+
+        <%end%>
+      <%else%>
+          Nobody has commented yet. Be the first! <br>
+      <%end%>
+
+      <br>
+
+      <div class = "post-buttons">
+        <div class = "comment-button" data-controller="toggle"
+          data-toggle-primary-class="hidden">
+          <div data-toggle-target="button">
+          <%= form_with model: @comment do |f| %>
+            <%= f.hidden_field :post_id, value: post.id%> 
+            <%= f.label :body %> 
+            <%= f.text_field :body %> <br>
+
+            <%= f.submit "Add Comment" %>
+            
+          <% end %>
+          <button data-toggle-target="button" data-action="toggle#clicked">
+            Scrap Comment
+          </button>
+          </div>
+
+          <button data-toggle-target="button2" data-action="toggle#clicked">
+            Add Comment
+          </button>
+        </div>
+
+        <div class = "details-button">
+          <%= button_to "Details", post_path(post), method: :get%>
+        </div>
+      </div>
+    </div>
   <%end%>
-<%end%>
 
+<%else%>
+  <p>There are no posts.</p>
+<%end%>

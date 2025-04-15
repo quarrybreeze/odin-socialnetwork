@@ -1,18 +1,28 @@
+<div class="header">
 <h1>Users#index</h1>
 <p>Find me in app/views/users/index.html.erb</p>
 
 <h3>List of users:</h3>
+</div>
 <% @users.each do |user| %>
   <% followers = user.followers%>
   <% profile_pic_url = user.picture_url%>
-  <img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
-  <% display_name = user.display_name %> 
-  <%= link_to display_name, user_path(user)%>
-  <% if followers.include?(current_user)%>
-    <%= button_to "Unfollow", user_follow_path(user, current_user), method: :delete %>
-  <% elsif user == current_user %>
-  <% else %>
-    <%= button_to "Follow", user_follows_path(user) %>
-  <%end%>
-  <br>
+  <div class = "user-index">
+    <div class = "pic">
+      <img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
+    </div>
+    <div class = "user-details">
+      <% display_name = user.display_name %> 
+      <%= link_to display_name, user_path(user)%>
+    </div>
+    <div class = "user-follow-button">
+      <% if followers.include?(current_user)%>
+
+        <%= button_to "Unfollow", user_follow_path(user, current_user), method: :delete %>
+      <% elsif user == current_user %>
+      <% else %>
+        <%= button_to "Follow", user_follows_path(user) %>
+      <%end%>
+    </div>
+  </div>
 <%end%>

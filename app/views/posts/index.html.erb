@@ -1,66 +1,115 @@
-<h1>Posts#index</h1>
-<p>Find me in app/views/posts/index.html.erb</p>
+<div class = "header">
+  <h1>Posts#index</h1>
+  <p>Find me in app/views/posts/index.html.erb</p>
 
-<%= button_to "New Post", new_post_path, method: :get%>
+  <div class = "new-post-button">
+    <div class = "post-button" data-controller="toggle"
+      data-toggle-primary-class="hidden">
+      <div data-toggle-target="button">
+      <%= form_with model: @post do |f| %>
+        <%= f.label current_user.display_name %> says 
+        <%= f.text_field :body %> <br>
 
-<%posts = @posts%>
-<h3>Posts: </h3>
+        <%= f.submit "Publish" %> <br> <br>
+        
+      <% end %>
+      <button data-toggle-target="button" data-action="toggle#clicked">
+        Cancel Post
+      </button>
+      </div>
+
+      <button data-toggle-target="button2" data-action="toggle#clicked">
+        New Post
+      </button>
+    </div>
+  </div>
+
+  <%posts = @posts%>
+  <h3>Recent posts: </h3>
+</div>
 <% if posts.any? %>
   
   <% posts.each do |post|%>
     <div class = "post">
       <% post_number = post.id%>
       <% profile_pic_url = post.author.picture_url%>
-      <img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
-      <p>Body: <%= post.body%></p>
-      <p>Author: <%= post.author.display_name%> posted at: <%= post.created_at %></p>
-      <p>Likes: <%= post.likes.count %> 
+      <% author = post.author_id%>
+      <% display_name = post.author.display_name%> 
+      <div class = "content">
+        <div class = "pic">
+          <img class = "profpic" src="<%= profile_pic_url %>" alt="User's profile picture">
+        </div>
+        <div class = "post-body">
+          <%= post.body%>
+        </div>
+        <div class = "post-details">
+          <%= link_to display_name, user_path(author)%> posted at: <%= post.created_at %>
+        </div>
+        <div class = "post-like-details">
+          <div class = "like-counter">
+          Likes: <%= post.likes.count %>
+          </div> 
+          <div class = "like-interactions">
+          <% if post.likes.exists?(user_id: current_user.id) %>
+            <%= button_to "Unlike", post_like_path(post, current_user), method: :delete %>
+          <% else %>
+            <%= button_to "Like", post_likes_path(post)%>
+          <% end %>
+          </div>
+        </div>
+      </div>
+      <br>
 
-      <% if post.likes.exists?(user_id: current_user.id) %>
-        <%= button_to "Unlike", post_like_path(post, current_user), method: :delete %>
-      <% else %>
-        <%= button_to "Like", post_likes_path(post)%>
-      <% end %>
-      
-      </p>
 
       Comments: <br>
-      <% if posts.any? %>
+      <% if post.comments.any? %>
         <% post.comments.each do |comment| %>
-          <%= comment.commentator.display_name %> says <%= comment.body %><br>
-          <% if comment.commentator == current_user %>
-            <%= button_to "Delete", comment_path(comment), method: :delete %>
-          <% end %>
+          <div class = "comment">
+            <div class = "comment-content">
+              <% display_name = comment.commentator.display_name %>
+              <% commentator = comment.commentator.id %>
+              <%= link_to display_name, user_path(commentator) %> says <%= comment.body %>
+            </div>
+            <div class = "comment-interactions">
+              <% if comment.commentator == current_user %>
+                <%= button_to "Delete", comment_path(comment), method: :delete %>
+              <% end %>
+            </div>
+          </div>
+
         <%end%>
       <%else%>
-          Nobody has commented yet. Be the first!
+          Nobody has commented yet. Be the first! <br>
       <%end%>
 
       <br>
 
-      <div data-controller="toggle"
-        data-toggle-primary-class="hidden">
-        <div data-toggle-target="button">
-        <%= form_with model: @comment do |f| %>
-          <%= f.hidden_field :post_id, value: post.id%> 
-          <%= f.label :body %> 
-          <%= f.text_field :body %> <br>
+      <div class = "post-buttons">
+        <div class = "comment-button" data-controller="toggle"
+          data-toggle-primary-class="hidden">
+          <div data-toggle-target="button">
+          <%= form_with model: @comment do |f| %>
+            <%= f.hidden_field :post_id, value: post.id%> 
+            <%= f.label :body %> 
+            <%= f.text_field :body %> <br>
 
-          <%= f.submit "Add Comment" %>
-          
-        <% end %>
-        <button data-toggle-target="button" data-action="toggle#clicked">
-          Undo
-        </button>
+            <%= f.submit "Add Comment" %>
+            
+          <% end %>
+          <button data-toggle-target="button" data-action="toggle#clicked">
+            Scrap Comment
+          </button>
+          </div>
+
+          <button data-toggle-target="button2" data-action="toggle#clicked">
+            Add Comment
+          </button>
         </div>
 
-        <button data-toggle-target="button2" data-action="toggle#clicked">
-          Add Comment
-        </button>
+        <div class = "details-button">
+          <%= button_to "Details", post_path(post), method: :get%>
+        </div>
       </div>
-
-
-      <%= button_to "Details", post_path(post), method: :get%>
     </div>
   <%end%>
 

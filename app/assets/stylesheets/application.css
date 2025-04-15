@@ -10,6 +10,16 @@
  */
  .navbar {
   display: flex;
+  margin: 1em;
+  justify-content: center;
+ }
+
+ .header {
+  display: flex;
+  flex-direction: column;
+  max-width: 30em;
+  margin: 1em auto;
+  align-content: center;
  }
 
  .navbar .navlink {
@@ -23,9 +33,111 @@
 .post {
   border-style: solid;
   margin: 1em;
+  max-width: 30em;
+  margin: 1em auto;
 }
 
 .profpic {
-  height: 3em;
-  width: 3em;
+  height: 5em;
+  width: 5em;
+  display: block;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+  gap: 4px;
+  grid-template-areas:
+    "pic post-body"
+    "pic post-details"
+    "pic post-like-details"
+    
+}
+
+.pic {
+  grid-area: pic;
+  align-self: center;
+}
+
+.post-body {
+  grid-area: post-body;
+}
+
+.post-details {
+  grid-area: post-details;
+}
+
+.post-like-details {
+  grid-area: post-like-details;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+  gap: 4px;
+  display: grid;
+  grid-template-areas:
+    "like-counter like-interactions"
+}
+
+.like-counter {
+  grid-area: like-counter;
+}
+
+.like-interactions {
+  grid-area: like-interactions;
+}
+
+.comment {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px;
+  grid-template-areas:
+    "comment-content comment-interactions"
+}
+
+.comment-content {
+  grid-area: comment-content;
+}
+
+.comment-interactions {
+  grid-area: comment-interactions;
+}
+
+.post-buttons {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
+  gap: 4px;
+  grid-template-areas:
+    "comment-button details-button"
+}
+
+.comment-button {
+  grid-area: comment-button;
+}
+
+.details-button {
+  grid-area: details-button;
+  margin-left: auto;
+}
+
+.user-index {
+  border-style: solid;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+  gap: 4px;
+  max-width: 30em;
+  margin: 1em auto;
+  grid-template-areas:
+    "pic user-details"
+    "pic user-follow-button"
+}
+
+.user-details {
+  grid-area: user-details;
+}
+
+.user-follow-button {
+  grid-area: user-follow-button;
+  margin-top: auto;
 }

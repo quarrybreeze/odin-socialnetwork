@@ -6,6 +6,7 @@ class PostsController < ApplicationController
     @posts = Post.includes(:author, :likes, :comments)
                  .where(author_id: following_ids)
     @comment = Comment.new
+    @post = Post.new
   end
 
   def new
@@ -21,11 +22,11 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
+    @post = Post.new(post_params.merge(author_id: current_user.id))
     if @post.save
-      redirect_to post_path(@post), notice: "Post was created successfully"
+      redirect_back fallback_location: root_path, notice: "Post was created successfully"
     else
-      render :new, status: :unprocessable_entity
+      redirect_back fallback_location: root_path, status: :unprocessable_entity
     end
   end
 
