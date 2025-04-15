@@ -93,11 +93,11 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address:         "smtp.gmail.com",
     port:            587,
-    domain:          "example.com",
+    domain:          "odin-socialnetwork-production.up.railway.app",
     user_name:       ENV["smtp_user_name"],
     password:        ENV["smtp_password"],
     authentication:  "plain",
-    enable_starttls: true,
+    enable_starttls_auto: true,
     open_timeout:    5,
     read_timeout:    5
   }
