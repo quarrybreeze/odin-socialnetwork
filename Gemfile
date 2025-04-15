@@ -65,3 +65,5 @@ end
 gem "devise", "~> 4.9"
 gem "letter_opener", group: :development
 gem "figaro"
+gem 'omniauth-github'
+gem 'omniauth-rails_csrf_protection'
