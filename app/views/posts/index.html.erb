@@ -114,5 +114,7 @@
   <%end%>
 
 <%else%>
-  <p>There are no posts.</p>
+  <div class="header">
+    There are no posts... <%= link_to "Follow some users!", users_path %>
+  </div>
 <%end%>
