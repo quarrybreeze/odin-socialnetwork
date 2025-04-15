@@ -8,6 +8,15 @@ fi
 
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  # First install SolidQueue migrations if needed
+  if [ ! -f db/migrate/*_solid_queue*.rb ]; then
+<<<<<<< HEAD
+    ./bin/rails solid_queue:install
+=======
+    ./bin/rails solid_queue:install:migrations
+>>>>>>> ffb0219cf1d207471e7621bcaf2610621934dc74
+  fi
+  # Then prepare database (which includes migrations)
   ./bin/rails db:prepare
   ./bin/rails solid_queue:install
   ./bin/rails db:migrate
