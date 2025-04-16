@@ -22,5 +22,4 @@
   <%- resource_class.omniauth_providers.each do |provider| %>
     <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %><br />
   <% end %>
-  <%= link_to "Sign in with Github", user_github_omniauth_authorize_path, method: :post %>
 <% end %>
