@@ -6,8 +6,8 @@ class User < ApplicationRecord
 
   after_create :send_welcome_email
 
-  has_many :authored_posts, class_name: "Post", foreign_key: "author_id"
-  has_many :likes, dependent: :destroy
+  has_many :authored_posts, class_name: "Post", foreign_key: "author_id", dependent: :destroy
+  has_many :likes, foreign_key: "user_id", dependent: :destroy
 
   has_many :followed_by, foreign_key: :followed_user_id, class_name: "Follow", dependent: :destroy
   has_many :followers, through: :followed_by, source: :follower
